@@ -114,4 +114,7 @@ const filesUpload = asyncHandler(async(req,res)=>{
     // console.log(req.files)
 })
 
+
+
+
 export {queryFire,paginationInfo,getCityList,getStateList,getAllParentCategories,getAllCategories,getAllContactTypes,filesUpload}

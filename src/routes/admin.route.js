@@ -9,6 +9,9 @@ import {vendorValidation,serviceValidation,customerValidation} from "../validati
 import {categoryValidation} from "../validation/category.validation.js"
 import {login} from "../controllers/users.controller.js"
 import {verifiedJWT}  from "../middlewares/auth.middleware.js"
+
+
+import {PayPayment} from "../controllers/razorpay.controller.js";
 const router = Router();
 
 // admin users
@@ -48,5 +51,7 @@ router.route("/getAllParentCategories").get(upload.none(),getAllParentCategories
 router.route("/getAllCategories").get(upload.none(),getAllCategories)
 router.route("/getAllContactTypes").get(upload.none(),getAllContactTypes)
 router.route("/filesUpload").post(upload.array('multipleFiles'),filesUpload)
+
+router.route("/PayPayment").post(upload.none(),PayPayment)
 
 export default router;

@@ -62,25 +62,25 @@ const db = mysql.createConnection({
 import {sqlDB,Users} from "../Backend/src/database/database.js";
 // sqlDB.sequelize.sync();
 
-let User= sqlDB.Users
-
-let UserData = {
-  // name:"kamal",
-  email:"demo@gmail.com",
-  mobile:"12121212"
-}
+// let UserData = {
+//   // name:"kamal",
+//   email:"demo@gmail.com",
+//   mobile:"12121212"
+// }
 
 // sqlDB.sequelize.sync()
 //   .then(() => {
 //     console.log('Database & tables created!');
 //   });
-Users.create(UserData)
-  .then(data => {
-    console.log('User created:', data);
-  })
-  .catch(err => {
-   console.log(err.message);
-  });
+
+// create a user
+// Users.create(UserData)
+//   .then(data => {
+//     console.log('User created:', data);
+//   })
+//   .catch(err => {
+//    console.log(err.message);
+//   });
 
  
 
