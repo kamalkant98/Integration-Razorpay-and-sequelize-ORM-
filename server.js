@@ -6,11 +6,11 @@ import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser"
 import dotenv from "dotenv";
-// import Sequelize  from "sequelize";
-// import {db}  from "./src/database/database.js";
-// const { QueryTypes } = require('sequelize');
-// import {QueryTypes} from "sequelize"
-// import Sequelize from "sequelize";
+// import {Sequelize,Op} from "sequelize";
+// import Users from "../Backend/src/models/users.model.js";
+
+
+
 
 
 dotenv.config({
@@ -48,27 +48,42 @@ const db = mysql.createConnection({
 
 
 // console.log(conn,"===");
-db.connect(async(err,connection) => {
-  if (err) {
-    console.error("Error connecting to database:", err);
-    return;
-  }
- console.log("Connected to database!");
-});
+// db.connect(async(err,connection) => {
+//   if (err) {
+//     console.error("Error connecting to database:", err);
+//     return;
+//   }
+//  console.log("Connected to database!");
+// });
 
 // console.log(db);
 
-// const sequelizeConn = new Sequelize(process.env.DB_DATABASE,process.env.DB_USER, process.env.DB_PASSWORD, {
-//   host:  process.env.DB_HOST,
-//   dialect:'mysql' /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */
-// });
+// const {sqlDB} = require("./app/models");
+import {sqlDB,Users} from "../Backend/src/database/database.js";
+// sqlDB.sequelize.sync();
 
-// try {
-//   await sequelizeConn.authenticate();
-//   console.log('Connection has been established successfully asdasd.');
-// } catch (error) {
-//   console.error('Unable to connect to the database:', error);
-// }
+let User= sqlDB.Users
+
+let UserData = {
+  // name:"kamal",
+  email:"demo@gmail.com",
+  mobile:"12121212"
+}
+
+// sqlDB.sequelize.sync()
+//   .then(() => {
+//     console.log('Database & tables created!');
+//   });
+Users.create(UserData)
+  .then(data => {
+    console.log('User created:', data);
+  })
+  .catch(err => {
+   console.log(err.message);
+  });
+
+ 
+
 
 app.get('/', async (req, res) => {
  res.send('server is running!',)
