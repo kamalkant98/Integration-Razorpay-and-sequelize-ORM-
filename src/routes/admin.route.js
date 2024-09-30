@@ -11,7 +11,7 @@ import {login} from "../controllers/users.controller.js"
 import {verifiedJWT}  from "../middlewares/auth.middleware.js"
 
 
-import {PayPayment} from "../controllers/razorpay.controller.js";
+import {PayPayment,addAndUpdatePlan,createCustomer} from "../controllers/razorpay.controller.js";
 const router = Router();
 
 // admin users
@@ -53,5 +53,7 @@ router.route("/getAllContactTypes").get(upload.none(),getAllContactTypes)
 router.route("/filesUpload").post(upload.array('multipleFiles'),filesUpload)
 
 router.route("/PayPayment").post(upload.none(),PayPayment)
+router.route("/addAndUpdatePlan").post(upload.none(),addAndUpdatePlan)
+router.route("/createCustomer").post(upload.none(),createCustomer)
 
 export default router;

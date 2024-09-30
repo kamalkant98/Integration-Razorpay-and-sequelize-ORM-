@@ -6,6 +6,12 @@ import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser"
 import dotenv from "dotenv";
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Simulate __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 // import {Sequelize,Op} from "sequelize";
 // import Users from "../Backend/src/models/users.model.js";
 
@@ -24,10 +30,13 @@ app.use(cors({
   origin : "*"
 }));
 
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({limit:'100kb'}))
 app.use(express.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.use(cookieParser());
+// app.use(express.static(__dirname + '/public'));
+// app.use(express.static(__dirname + '/public'));
 
 // const db={};
 
@@ -61,6 +70,8 @@ const db = mysql.createConnection({
 // const {sqlDB} = require("./app/models");
 import {sqlDB,Users} from "../Backend/src/database/database.js";
 // sqlDB.sequelize.sync();
+// console.log(sqlDB);
+
 
 // let UserData = {
 //   // name:"kamal",
@@ -87,6 +98,15 @@ import {sqlDB,Users} from "../Backend/src/database/database.js";
 
 app.get('/', async (req, res) => {
  res.send('server is running!',)
+});
+
+app.get('/payment', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'payment.html'));
+  // res.send("asdasd");
+  // res.sendFile(__dirname+'./public/payment.html');
+  // let jk = path.resolve(__dirname, 'files', '/public/payment.html');
+  //  console.log(jk);
+   
 });
 
 import adminRoutes from "./src/routes/admin.route.js";

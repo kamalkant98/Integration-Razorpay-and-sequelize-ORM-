@@ -35,7 +35,12 @@ const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, pr
   sqlDB.sequelize = sequelize;
   
   import UsersModel from "../models/users.model.js";
+  import PlanModel from "../models/plan.model.js";
+  import SubscriptionModel from "../models/subscription.model.js";
 //   sqlDB.Users = require("")(sequelize, Sequelize);
   const Users = UsersModel(sequelize, Sequelize);
+  const Plan = PlanModel(sequelize, Sequelize);
+  const Subscription = SubscriptionModel(sequelize, Sequelize);
 
-export {sqlDB,Users};
+
+export {sqlDB,Users,Subscription,Plan};
