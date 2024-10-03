@@ -8,6 +8,7 @@ import bodyParser from "body-parser"
 import dotenv from "dotenv";
 import path from 'path';
 import { fileURLToPath } from 'url';
+// import {sqlDB,Users,Plan,Subscription} from "../database/database.js";
 
 // Simulate __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -29,7 +30,7 @@ const app = express();
 app.use(cors({
   origin : "*"
 }));
-
+app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({limit:'100kb'}))
 app.use(express.urlencoded({extended: true}));
@@ -68,7 +69,7 @@ const db = mysql.createConnection({
 // console.log(db);
 
 // const {sqlDB} = require("./app/models");
-import {sqlDB,Users} from "../Backend/src/database/database.js";
+import {sqlDB,Users,Plan,Subscription} from "../Backend/src/database/database.js";
 // sqlDB.sequelize.sync();
 // console.log(sqlDB);
 
@@ -100,12 +101,23 @@ app.get('/', async (req, res) => {
  res.send('server is running!',)
 });
 
-app.get('/payment', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'payment.html'));
-  // res.send("asdasd");
-  // res.sendFile(__dirname+'./public/payment.html');
-  // let jk = path.resolve(__dirname, 'files', '/public/payment.html');
-  //  console.log(jk);
+app.get('/payment/:id', async(req, res) => {
+  // res.sendFile(path.join(__dirname, 'public', 'payment.html'));
+  const paymentId = req.params.id; 
+// console.log(paymentId,"[[[");
+  
+  let KEY_ID = process.env.KEY_ID
+  let KEY_SECRET = process.env.KEY_SECRET
+
+  let orderData = await Subscription.findOne({
+    where: {id:paymentId}, // Filtering condition
+  });
+  
+  let getPlan = await Plan.findOne({
+    where: { status: 'active',id:orderData.planId}, // Filtering condition
+  });
+
+  res.render('payment', { KEY_ID,orderData,getPlan});
    
 });
 

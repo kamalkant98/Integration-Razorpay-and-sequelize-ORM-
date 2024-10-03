@@ -2,7 +2,7 @@ import { db } from "../../server.js";
 import {asyncHandler} from "../utils/asyncHandler.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import {ApiError} from "../utils/ApiError.js"
-import {sqlDB,Users,Plan} from "../database/database.js";
+import {sqlDB,Users,Plan,Subscription} from "../database/database.js";
 import Razorpay from "razorpay";
 
 let rzp = new Razorpay({
@@ -78,6 +78,33 @@ const addAndUpdatePlan = asyncHandler(async(req,res) => {
   }
 });
 
+const createOrder = asyncHandler(async(req,res)=>{
+  const data = req.body;
+
+  let insData = await Subscription.create(data);
+
+  let getPlan = await Plan.findOne({
+    where: { status: 'active',id:data.planId}, // Filtering condition
+  });
 
 
-export {PayPayment,addAndUpdatePlan,createCustomer}
+  let rzpData = await rzp.orders.create({
+    amount: getPlan?.price * 100,
+    currency: getPlan?.currency,
+    receipt: getPlan?.name,
+    notes: {
+      key1: getPlan?.description,
+    }
+  })
+  await Subscription.update({ order_id:rzpData?.id},{
+        where: { id: insData.id }
+  });
+
+  return res.status(200).json(new ApiResponse(200,{insData,getPlan,rzpData},"Data Create successfully."));
+  // res.status(200).json("asdasd")
+
+});
+
+
+
+export {PayPayment,addAndUpdatePlan,createCustomer,createOrder}
